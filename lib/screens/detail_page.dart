@@ -1,24 +1,6 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // home_layout.dart
 import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/logic/weather_changenotifier.dart';
 import 'package:intl/intl.dart';
@@ -65,13 +47,12 @@ Future<void> _initializeWeatherProvider() async {
   Widget build(BuildContext context) {
     return Scaffold(
       
-      backgroundColor: Color.fromARGB(255, 0, 65, 155),
+      backgroundColor: const Color.fromARGB(255, 0, 65, 155),
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-              backgroundColor: Color.fromARGB(255, 0, 65, 155),
-
+              backgroundColor: const Color.fromARGB(255, 0, 65, 155),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,
+          icon: const Icon(Icons.arrow_back,
           color: Colors.white, // Set the icon color to white
           ),
           onPressed: () {
@@ -82,7 +63,7 @@ Future<void> _initializeWeatherProvider() async {
         // Other AppBar properties
       ),
       body: Padding(
-        padding: EdgeInsets.fromLTRB(40, 1.5 * kToolbarHeight, 40, 20),
+        padding: const EdgeInsets.fromLTRB(40, 1.5 * kToolbarHeight, 40, 20),
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Stack(
@@ -140,7 +121,7 @@ class _WeatherData extends StatelessWidget {
 
     if (data == null) {
       // Handle the case where data is null, you might want to show a loading indicator
-      return Center(child: const CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
+      return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
     }
 
     return Column(
@@ -158,7 +139,7 @@ class _WeatherData extends StatelessWidget {
             ],
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text(
           data.cityName.toString(),
           style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
@@ -254,7 +235,7 @@ DateFormat.jm().format(DateTime.now()),
                               const Spacer(),
                               Text(
                                 '${data.pressure} hPa',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w800,
                                     color: Color.fromARGB(255, 255, 255, 255)),
                               ),
@@ -281,7 +262,7 @@ DateFormat.jm().format(DateTime.now()),
                               const Spacer(),
                               Text(
                                 '${data.feelsLike}° ',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontWeight: FontWeight.w700,
                                     color: Color.fromARGB(255, 255, 255, 255)),
                               ),

@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/logic/weather_changenotifier.dart';
 import 'package:weather_app/model/weather_model.dart';
@@ -43,10 +40,10 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 0, 65, 155),
+      backgroundColor: const Color.fromARGB(255, 0, 65, 155),
       extendBodyBehindAppBar: true,
       body: Padding(
-        padding: EdgeInsets.fromLTRB(40, 1.8 * kToolbarHeight, 40, 20),
+        padding: const EdgeInsets.fromLTRB(40, 1.8 * kToolbarHeight, 40, 20),
         child: SizedBox(
           height: MediaQuery.of(context).size.height,
           child: Stack(
@@ -81,7 +78,7 @@ class _WeatherBackground extends StatelessWidget {
     final data = context.watch<WeatherProvider>().data;
 
     return Align(
-      alignment: AlignmentDirectional(1, -1.3),
+      alignment: const AlignmentDirectional(1, -1.3),
       child: Container(
         width: width,
         height: height,
@@ -101,15 +98,15 @@ class _WeatherBackground extends StatelessWidget {
 
     return FutureBuilder<void>(
       // Додаємо затримку в 15 секунд
-      future: Future.delayed(Duration(seconds: 15)),
+      future: Future.delayed(const Duration(seconds: 15)),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           // Після 15 секунд, перевіряємо чи дані все ще є нульовими
           if (data == null) {
             // Показуємо текст, оскільки дані все ще є нульовими
-            return Center(
+            return const Center(
               child: Text(
-                'No data available after 15 seconds',
+                'No data available. Try later!',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             );
@@ -119,7 +116,7 @@ class _WeatherBackground extends StatelessWidget {
           }
         } else {
           // Поки чекаємо 15 секунд, відображаємо індикатор завантаження
-          return Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
+          return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
         }
       },
     );
@@ -163,7 +160,7 @@ class _WeatherBackground extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailPage(),
+                  builder: (context) => const DetailPage(),
                 ),
               );
             },

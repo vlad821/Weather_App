@@ -1,5 +1,5 @@
 // weather_provider.dart
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/http.dart';
@@ -12,7 +12,9 @@ class WeatherProvider extends ChangeNotifier {
   Future<Position> _getCurrentLocation() async {
     bool servicePermission = await Geolocator.isLocationServiceEnabled();
     if (!servicePermission) {
-      print('Location service is disabled');
+      if (kDebugMode) {
+        print('Location service is disabled');
+      }
     }
 
     LocationPermission permission = await Geolocator.checkPermission();
@@ -31,11 +33,15 @@ class WeatherProvider extends ChangeNotifier {
 
       String currentAddress = "${place.locality ?? 'Kyiv'}, ${place.country ?? 'Ukraine'}";
 
-      print(currentAddress); // You can do something with the address if needed
+      if (kDebugMode) {
+        print(currentAddress);
+      } // You can do something with the address if needed
 
       notifyListeners(); // Notify listeners after updating the address
     } catch (e) {
-      print('Error: $e');
+      if (kDebugMode) {
+        print('Error: $e');
+      }
     }
   }
 
@@ -67,12 +73,16 @@ class WeatherProvider extends ChangeNotifier {
         data = weatherData;
       } else {
         // Handle the case where weather data is null
-        print("Weather data is null");
+        if (kDebugMode) {
+          print("Weather data is null");
+        }
       }
 
       notifyListeners();
     } catch (e) {
-      print("Error getting weather data: $e");
+      if (kDebugMode) {
+        print("Error getting weather data: $e");
+      }
     }
   }
 }
