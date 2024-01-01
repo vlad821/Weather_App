@@ -40,27 +40,43 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 0, 65, 155),
+       // extendBodyBehindAppBar: true,
+      backgroundColor: const Color.fromARGB(255, 54, 115, 200),
       extendBodyBehindAppBar: true,
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(40, 1.8 * kToolbarHeight, 40, 20),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-              Positioned(
-                 top: -90.0,  // Adjust the top value as needed
-            left:5.0, // Adjust the left value as neededF
-      right:5.0, // Adjust the left value as needed
-      child: _WeatherBackground()),
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 50.0, sigmaY: 300.0),
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.transparent),
+      body: Container(
+         decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color.fromARGB(255, 59, 161, 245),
+       // Color.fromARGB(255, 23, 29, 208),
+  Color.fromARGB(255, 110, 180, 237),
+    Color.fromARGB(255, 207, 233, 255),
+           Color.fromARGB(255, 148, 205, 251),
+ Color.fromARGB(255, 59, 161, 245),
+  Color.fromARGB(255, 0, 52, 130),
+          Color.fromARGB(255, 48, 0, 87),
+             Color.fromARGB(235, 22, 0, 38),
+      ],
+    ),
+  ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(40, 1.8 * kToolbarHeight, 40, 20),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+               
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 50.0, sigmaY: 300.0),
+                  child: Container(
+                    decoration: const BoxDecoration(color: Colors.transparent),
+                  ),
                 ),
-              ),
-              _WeatherData(),
-            ],
+                _WeatherData(),
+              ],
+            ),
           ),
         ),
       ),
@@ -68,37 +84,39 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
   }
 }
 
-class _WeatherBackground extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var height = size.height;
-    var width = size.width;
+// class _WeatherBackground extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     var size = MediaQuery.of(context).size;
+//     var height = size.height;
+//     var width = size.width;
 
-    final data = context.watch<WeatherProvider>().data;
+//     final data = context.watch<WeatherProvider>().data;
 
-    return Align(
-      alignment: const AlignmentDirectional(1, -1.3),
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: data?.temp != null && data!.temp! > 18
-    ? Colors.yellow.shade400
-              : Colors.blue.shade200,
-        ),
-      ),
-    );
-  }
-}class _WeatherData extends StatelessWidget {
+//     return Align(
+//       alignment: const AlignmentDirectional(1, -1.3),
+//       child: Container(
+//         width: width,
+//         height: height,
+//         decoration: BoxDecoration(
+//           shape: BoxShape.circle,
+//           color: data?.temp != null && data!.temp! > 18
+//     ? Colors.yellow.shade400
+//               : Colors.blue.shade200,
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class _WeatherData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = context.watch<WeatherProvider>().data;
 
     return FutureBuilder<void>(
-      // Додаємо затримку в 15 секунд
-      future: Future.delayed(const Duration(seconds: 15)),
+      // Додаємо затримку в 10 секунд
+      future: Future.delayed(const Duration(seconds: 10)),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           // Після 15 секунд, перевіряємо чи дані все ще є нульовими
@@ -107,7 +125,7 @@ class _WeatherBackground extends StatelessWidget {
             return const Center(
               child: Text(
                 'No data available. Try later!',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 25, color: Color.fromARGB(255, 3, 7, 85),fontWeight: FontWeight.bold),
               ),
             );
           } else {
@@ -134,7 +152,7 @@ class _WeatherBackground extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Image.asset(
-                data.humidity! > 1000 ? 'assets/rainy.png' : 'assets/sunny.png',
+                data.humidity! < 1000 ? 'assets/rainy.png' : 'assets/sunny.png',
               ),
             ],
           ),
@@ -148,7 +166,7 @@ class _WeatherBackground extends StatelessWidget {
         ),
 
         Text(
-          '${data.temp}°',
+          '${data.temp?.toInt()}°С',
           style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 0, 0, 0)),
         ),
         const SizedBox(

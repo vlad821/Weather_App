@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_app/logic/weather_changenotifier.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/model/weather_model.dart';
 
 class DetailPage extends StatelessWidget {
   const DetailPage({Key? key}) : super(key: key);
@@ -35,53 +36,72 @@ Future<void> _initializeWeatherProvider() async {
  // await weatherProvider.getAddressFromCoordinates();
   
   // Assuming cityName is a property in WeatherModel
-  String cityName = weatherProvider.data?.cityName ?? 'Unknown City';
+ // String cityName = weatherProvider.data?.cityName ?? 'Unknown City';
    // String country = weatherProvider.data?.cityName ?? 'Unknown City';
 
   // Now you can use the cityName as needed.
-  print('City Name: $cityName');
+ // print('City Name: $cityName');
 }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
-      backgroundColor: const Color.fromARGB(255, 0, 65, 155),
-      extendBodyBehindAppBar: true,
+         extendBodyBehindAppBar: true,
+
       appBar: AppBar(
-              backgroundColor: const Color.fromARGB(255, 0, 65, 155),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back,
-          color: Colors.white, // Set the icon color to white
-          ),
-          onPressed: () {
-            // Pop the current route
-            Navigator.pop(context);
-          },
+  backgroundColor: Colors.transparent, // Зробіть фон прозорим
+  elevation: 0, // Забороніть тінь AppBar
+  leading: Builder(
+    builder: (BuildContext context) {
+      return IconButton(
+        icon: const Icon(
+          Icons.arrow_back,
+          color: Color.fromARGB(255, 13, 2, 51),
         ),
-        // Other AppBar properties
+        onPressed: () {
+          // Поверніться на попередню сторінку
+          Navigator.pop(context);
+        },
+      );
+    },
+  ),
+    //  backgroundColor:  Color.fromRGBO(128, 198, 255, 1),
       ),
-      body: Padding(
-        padding: const EdgeInsets.fromLTRB(40, 1.5 * kToolbarHeight, 40, 20),
-        child: SizedBox(
-          height: MediaQuery.of(context).size.height,
-          child: Stack(
-            children: [
-                 Positioned(
-                   top: -85.0,  // Adjust the top value as needed
-            left:5.0, // Adjust the left value as neededF
-      right:5.0, // Adjust the left value as needed
-      child: _WeatherBackground(),
+      body: Container(
+         decoration: const BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color.fromARGB(255, 59, 161, 245),
+       // Color.fromARGB(255, 23, 29, 208),
+  Color.fromARGB(255, 110, 180, 237),
+    Color.fromARGB(255, 207, 233, 255),
+           Color.fromARGB(255, 148, 205, 251),
+ Color.fromARGB(255, 59, 161, 245),
+  Color.fromARGB(255, 0, 52, 130),
+          Color.fromARGB(255, 48, 0, 87),
+             Color.fromARGB(235, 22, 0, 38),
+      ],
     ),
-              BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 50, sigmaY: 300.0),
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.transparent),
+  ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0.6 * kToolbarHeight, 20, 20),
+          child: SizedBox(
+            height: MediaQuery.of(context).size.height,
+            child: Stack(
+              children: [
+              
+                BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 60, sigmaY: 237.0),
+                  child: Container(
+                    decoration: const BoxDecoration(color: Colors.transparent),
+                  ),
                 ),
-              ),
-              _WeatherData(),
-            ],
+                _WeatherData(),
+              ],
+            ),
           ),
         ),
       ),
@@ -89,42 +109,65 @@ Future<void> _initializeWeatherProvider() async {
   }
 }
 
-class _WeatherBackground extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    var height = size.height;
-    var width = size.width;
+// class _WeatherBackground extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     var size = MediaQuery.of(context).size;
+//     var height = size.height;
+//     var width = size.width;
 
-    final data = context.watch<WeatherProvider>().data;
+//     final data = context.watch<WeatherProvider>().data;
 
-    return Align(
-      alignment: const AlignmentDirectional(1, -5.5),
-      child: Container(
-        width: width,
-        height: height,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: data?.temp != null && data!.temp! > 18
-              ? Colors.yellow.shade400
-              : Colors.blue.shade200,
-        ),
-      ),
-    );
-  }
-}
+//     return Align(
+//       alignment: const AlignmentDirectional(1, 5),
+//       child: Container(
+//         width: width,
+//         height: height,
+//         decoration: BoxDecoration(
+//           shape: BoxShape.circle,
+//           color: data?.temp != null && data!.temp! < 18
+//               ? const Color.fromARGB(255, 243, 233, 142)
+//               : Colors.blue.shade200,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _WeatherData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = context.watch<WeatherProvider>().data;
 
-    if (data == null) {
-      // Handle the case where data is null, you might want to show a loading indicator
-      return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
-    }
 
-    return Column(
+    return FutureBuilder<void>(
+      // Додаємо затримку в 10 секунд
+      future: Future.delayed(const Duration(seconds: 10)),
+      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          // Після 15 секунд, перевіряємо чи дані все ще є нульовими
+          if (data == null) {
+            // Показуємо текст, оскільки дані все ще є нульовими
+            return const Center(
+              child: Text(
+                'No data available. Try later!',
+                style: TextStyle(fontSize: 25, color: Color.fromARGB(255, 3, 7, 85),fontWeight: FontWeight.bold),
+              ),
+            );
+          } else {
+            // Відображаємо інші дані
+            return _buildDataWidget(context, data);
+          }
+        } else {
+          // Поки чекаємо 15 секунд, відображаємо індикатор завантаження
+          return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
+        }
+      },
+    );
+  }
+
+     Widget _buildDataWidget(BuildContext context, WeatherModel data) {
+       return Column(
       children: [
         // UI components using data
         SizedBox(
@@ -134,28 +177,29 @@ class _WeatherData extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Image.asset(
-                data.humidity! > 1000 ? 'assets/rainy.png' : 'assets/sunny.png',
+                data.humidity! < 1010 ? 'assets/rainy.png' : 'assets/sunny.png',
               ),
             ],
           ),
         ),
         const SizedBox(height: 20),
+          Text(
+          '${data.temp?.toInt()}°С',
+          style: const TextStyle(fontSize: 60, color:Color.fromARGB(255, 15, 27, 99),fontWeight: FontWeight.w700),
+        ),
         Text(
           data.cityName.toString(),
-          style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 40, color:Color.fromARGB(255, 15, 27, 99),fontWeight: FontWeight.w600),
         ),
         const SizedBox(
           height: 10,
         ),
      Text(
 DateFormat.jm().format(DateTime.now()),
-  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+  style: const TextStyle(fontSize: 30,  color:Color.fromARGB(255, 15, 27, 99),fontWeight: FontWeight.w600),
 ),
 
-        Text(
-          '${data.temp}°',
-          style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold),
-        ),
+      
         const SizedBox(
           height: 20,
         ),

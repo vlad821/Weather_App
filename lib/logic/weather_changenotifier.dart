@@ -98,7 +98,7 @@ Future<String> getCityName(double latitude, double longitude) async {
   // Extract city name and country from the first placemark
   if (placemarks.isNotEmpty) {
     String locality = placemarks[0].locality ?? 'Kyiv';
-    String country = placemarks[0].country ?? 'Unknown Country';
+    String country = placemarks[0].country ?? 'UKraine';
     return '$locality, $country';
   } else {
     return 'Kyiv';
