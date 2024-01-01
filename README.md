@@ -1,7 +1,7 @@
 
 # Weather App
 
-I created a simple weather app using Flutter that fetches weather information from an API and displayed it to the user. I used provider, geolocator and http packages.
+I created a simple weather app using Flutter that fetches weather information from an API and displayed it to the user. I used provider,geolocator,geocoding and http packages.
 
 
 ## Installation
@@ -20,7 +20,6 @@ flutter pub get
    ![789](https://github.com/vlad821/Weather_App/assets/115928876/2d865af3-857c-42b3-b300-faa53617ea6d)                                    ![989](https://github.com/vlad821/Weather_App/assets/115928876/cdb43dc5-ac8d-46c0-97f3-b9f706d060d6)
 
 ## Packages 
-  I used:
   ```bash
   http: ^1.1.2
   location: ^5.0.3
