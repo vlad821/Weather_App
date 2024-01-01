@@ -15,10 +15,15 @@ Config flutter project :
 
 ```bash
 flutter pub get
-```    
-## Screenshots
-   ![789](https://github.com/vlad821/Weather_App/assets/115928876/2d865af3-857c-42b3-b300-faa53617ea6d)                                    ![989](https://github.com/vlad821/Weather_App/assets/115928876/cdb43dc5-ac8d-46c0-97f3-b9f706d060d6)
+```
+Run project :
 
+```bash
+flutter run
+```  
+## Screenshots
+                        ![789](https://github.com/vlad821/Weather_App/assets/115928876/2d865af3-857c-42b3-b300-faa53617ea6d)                     ![9999](https://github.com/vlad821/Weather_App/assets/115928876/89aa495c-90c2-4c7f-837d-0be24e464cd4)
+                            
 ## Packages 
   ```bash
   http: ^1.1.2
