@@ -17,7 +17,8 @@ Config flutter project :
 flutter pub get
 ```    
 ## Screenshots
-   ![789](https://github.com/vlad821/Weather_App/assets/115928876/2d865af3-857c-42b3-b300-faa53617ea6d)         ![789](https://github.com/vlad821/Weather_App/assets/115928876/703c9926-10ec-42a6-b9a4-80041a795628)
+   ![789](https://github.com/vlad821/Weather_App/assets/115928876/2d865af3-857c-42b3-b300-faa53617ea6d)                                    ![989](https://github.com/vlad821/Weather_App/assets/115928876/cdb43dc5-ac8d-46c0-97f3-b9f706d060d6)
+
 ## Packages 
   I used:
   ```bash
