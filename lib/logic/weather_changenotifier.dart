@@ -29,10 +29,7 @@ class WeatherProvider extends ChangeNotifier {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(location.latitude, location.longitude);
       Placemark place = placemarks[0];
-
-      String currentAddress =
-          "${place.locality ?? 'Kyiv'}, ${place.country ?? 'Ukraine'}";
-
+      String currentAddress =  "${place.locality }, ${place.country }";
       if (kDebugMode) {
         print(currentAddress);
       } // You can do something with the address if needed
@@ -59,7 +56,9 @@ class WeatherProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("Error getting location or weather data: $e");
+      if (kDebugMode) {
+        print("Error getting location or weather data: $e");
+      }
     }
   }
 
@@ -90,7 +89,6 @@ class WeatherProvider extends ChangeNotifier {
 Future<String> getCityName(double latitude, double longitude) async {
   List<Placemark> placemarks =
       await placemarkFromCoordinates(latitude, longitude);
-
   // Extract city name  from the first placemark
   if (placemarks.isNotEmpty) {
     String locality = placemarks[0].locality ?? 'Kyiv';
