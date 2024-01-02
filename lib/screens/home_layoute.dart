@@ -34,46 +34,40 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
     WeatherProvider weatherProvider =
         Provider.of<WeatherProvider>(context, listen: false);
     await weatherProvider.getDataFromLocation();
-   // await weatherProvider.getAddressFromCoordinates();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       // extendBodyBehindAppBar: true,
+      // extendBodyBehindAppBar: true,
       backgroundColor: const Color.fromARGB(255, 54, 115, 200),
       extendBodyBehindAppBar: true,
       body: Container(
-         decoration: const BoxDecoration(
-    gradient: LinearGradient(
-      begin: Alignment.topCenter,
-      end: Alignment.bottomCenter,
-      colors: [
-        Color.fromARGB(255, 59, 161, 245),
-       // Color.fromARGB(255, 23, 29, 208),
-  Color.fromARGB(255, 110, 180, 237),
-    Color.fromARGB(255, 207, 233, 255),
-           Color.fromARGB(255, 148, 205, 251),
- Color.fromARGB(255, 59, 161, 245),
-  Color.fromARGB(255, 0, 52, 130),
-          Color.fromARGB(255, 48, 0, 87),
-             Color.fromARGB(235, 22, 0, 38),
-      ],
-    ),
-  ),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color.fromARGB(255, 48, 0, 87),
+              Color.fromARGB(255, 0, 52, 130),
+              Color.fromARGB(255, 59, 161, 245),
+              Color.fromARGB(255, 110, 180, 237),
+              Color.fromARGB(255, 207, 233, 255),
+              Color.fromARGB(255, 207, 233, 255),
+              Color.fromARGB(255, 148, 205, 251),
+              Color.fromARGB(255, 25, 131, 217),
+              Color.fromARGB(255, 0, 52, 130),
+              Color.fromARGB(255, 48, 0, 87),
+              Color.fromARGB(235, 22, 0, 38),
+            ],
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(40, 1.8 * kToolbarHeight, 40, 20),
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Stack(
               children: [
-               
-                BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 50.0, sigmaY: 300.0),
-                  child: Container(
-                    decoration: const BoxDecoration(color: Colors.transparent),
-                  ),
-                ),
                 _WeatherData(),
               ],
             ),
@@ -84,57 +78,59 @@ class _HomeScreenContentState extends State<_HomeScreenContent> {
   }
 }
 
-// class _WeatherBackground extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     var size = MediaQuery.of(context).size;
-//     var height = size.height;
-//     var width = size.width;
-
-//     final data = context.watch<WeatherProvider>().data;
-
-//     return Align(
-//       alignment: const AlignmentDirectional(1, -1.3),
-//       child: Container(
-//         width: width,
-//         height: height,
-//         decoration: BoxDecoration(
-//           shape: BoxShape.circle,
-//           color: data?.temp != null && data!.temp! > 18
-//     ? Colors.yellow.shade400
-//               : Colors.blue.shade200,
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class _WeatherData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final data = context.watch<WeatherProvider>().data;
 
+    final startTime = DateTime.now();
+
     return FutureBuilder<void>(
-      // Додаємо затримку в 10 секунд
-      future: Future.delayed(const Duration(seconds: 10)),
+      future: Future.delayed(const Duration(seconds: 2)),
       builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+        final elapsedTime = DateTime.now().difference(startTime);
+
         if (snapshot.connectionState == ConnectionState.done) {
-          // Після 15 секунд, перевіряємо чи дані все ще є нульовими
           if (data == null) {
-            // Показуємо текст, оскільки дані все ще є нульовими
             return const Center(
               child: Text(
-                'No data available. Try later!',
-                style: TextStyle(fontSize: 25, color: Color.fromARGB(255, 3, 7, 85),fontWeight: FontWeight.bold),
+                'No data avaible. Try later!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color.fromARGB(255, 3, 7, 85),
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             );
           } else {
-            // Відображаємо інші дані
             return _buildDataWidget(context, data);
           }
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          // Check if 5 seconds have passed and data is still not available
+          if (elapsedTime.inSeconds >= 5 && data == null) {
+            return const Center(
+              child: Text(
+                'No data avaible. Try later!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Color.fromARGB(255, 3, 7, 85),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(
+                color: Color.fromARGB(255, 0, 65, 155),
+              ),
+            );
+          }
         } else {
-          // Поки чекаємо 15 секунд, відображаємо індикатор завантаження
-          return const Center(child: CircularProgressIndicator(color: Color.fromARGB(255, 0, 65, 155)));
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Color.fromARGB(255, 0, 65, 155),
+            ),
+          );
         }
       },
     );
@@ -152,22 +148,43 @@ class _WeatherData extends StatelessWidget {
             alignment: Alignment.bottomCenter,
             children: [
               Image.asset(
-                data.humidity! < 1000 ? 'assets/rainy.png' : 'assets/sunny.png',
+                data.pressure! < 1011 ? 'assets/rainy.png' : 'assets/sunny.png',
               ),
             ],
           ),
         ),
-        Text(
-          data.cityName.toString(),
-          style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 0, 0, 0)),
+        const SizedBox(
+          height: 5,
         ),
+        Text(
+          '${data.temp?.toInt()}°С',
+          style: const TextStyle(
+              fontSize: 50,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 0, 0, 0)),
+        ),
+
         const SizedBox(
           height: 10,
         ),
 
         Text(
-          '${data.temp?.toInt()}°С',
-          style: const TextStyle(fontSize: 50, fontWeight: FontWeight.bold,color: Color.fromARGB(255, 0, 0, 0)),
+          data.cityName.toString(),
+          style: const TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 0, 0, 0)),
+        ),
+        const SizedBox(
+          height: 0,
+        ),
+
+        Text(
+          data.pressure! < 1011 ? 'Cloudy.Possible rain!' : 'Sunny',
+          style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 255, 255, 255)),
         ),
         const SizedBox(
           height: 80,
@@ -184,7 +201,10 @@ class _WeatherData extends StatelessWidget {
             },
             child: const Text(
               'Additional Information',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700,color: Color.fromARGB(255, 255, 255, 255)),
+              style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.w700,
+                  color: Color.fromARGB(255, 255, 255, 255)),
             ),
           ),
         ),

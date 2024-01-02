@@ -1,8 +1,7 @@
-// weather_provider.dart
 import 'package:flutter/foundation.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:weather_app/http.dart';
+import 'package:weather_app/logic/weather_http.dart';
 import 'package:weather_app/model/weather_model.dart';
 
 class WeatherProvider extends ChangeNotifier {
@@ -27,11 +26,12 @@ class WeatherProvider extends ChangeNotifier {
 
   Future<void> getAddressFromCoordinates(Position location) async {
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(
-          location.latitude, location.longitude);
+      List<Placemark> placemarks =
+          await placemarkFromCoordinates(location.latitude, location.longitude);
       Placemark place = placemarks[0];
 
-      String currentAddress = "${place.locality ?? 'Kyiv'}, ${place.country ?? 'Ukraine'}";
+      String currentAddress =
+          "${place.locality ?? 'Kyiv'}, ${place.country ?? 'Ukraine'}";
 
       if (kDebugMode) {
         print(currentAddress);
@@ -87,23 +87,15 @@ class WeatherProvider extends ChangeNotifier {
   }
 }
 
-
-
-
-
-
 Future<String> getCityName(double latitude, double longitude) async {
-  List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+  List<Placemark> placemarks =
+      await placemarkFromCoordinates(latitude, longitude);
 
-  // Extract city name and country from the first placemark
+  // Extract city name  from the first placemark
   if (placemarks.isNotEmpty) {
     String locality = placemarks[0].locality ?? 'Kyiv';
-    String country = placemarks[0].country ?? 'UKraine';
-    return '$locality, $country';
+    return locality;
   } else {
     return 'Kyiv';
   }
 }
-
-
-

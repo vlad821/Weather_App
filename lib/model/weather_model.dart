@@ -1,13 +1,10 @@
 class WeatherModel{
   String? cityName ;
-  
   double? temp ;
   double? wind ;
   int? humidity ;
   double? feelsLike ;
   int? pressure ;
-
-
   WeatherModel(
       this.cityName,
       this.temp ,
@@ -16,7 +13,6 @@ class WeatherModel{
       this.feelsLike ,
       this.pressure ,
       );
-
   WeatherModel.fromjson(Map<String , dynamic>json){
     cityName = json['name'];
     temp = json['main']['temp'];
