@@ -22,8 +22,11 @@ Run project :
 flutter run
 ```  
 ## Screenshots
-  ![789](https://github.com/vlad821/Weather_App/assets/115928876/2d865af3-857c-42b3-b300-faa53617ea6d)                     ![9999](https://github.com/vlad821/Weather_App/assets/115928876/89aa495c-90c2-4c7f-837d-0be24e464cd4)
-                            
+
+       ![123](https://github.com/vlad821/Weather_App/assets/115928876/41d65791-bd27-4431-a86c-8f4b1cc2ac98)  ![124](https://github.com/vlad821/Weather_App/assets/115928876/37015f1d-7a74-464f-adfa-0f97e105a50e) ![125](https://github.com/vlad821/Weather_App/assets/115928876/64bc3365-2748-412a-acc6-d7c1f4aa78b8)
+
+
+                     
 ## Packages 
   ```bash
   http: ^1.1.2
